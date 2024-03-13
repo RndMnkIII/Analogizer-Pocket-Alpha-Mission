@@ -1040,7 +1040,7 @@ module core_top
     //*** Analogizer Interface V1.0 ***
     wire analogizer_ena;
 	wire [4:0] game_cont_type /* synthesis keep */;
-	wire [1:0] game_cont_sample_rate /* synthesis keep */;
+	wire [2:0] game_cont_sample_rate /* synthesis keep */;
 	wire p1_interface /* synthesis keep */;
 	wire p2_interface /* synthesis keep */;
 	wire BtnCasAplusSEL = 0;

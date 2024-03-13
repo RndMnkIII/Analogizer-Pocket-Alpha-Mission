@@ -348,9 +348,13 @@
                 "enabled": true,
                 "persist": true,
                 "address": "0xF7000000",
-                "defaultval": "0x0",
-                "mask": "0xFFFFFCFF",
+                "defaultval": "0x400",
+                "mask": "0xFFFFF8FF",
                 "options": [
+                    {
+                    "value": "0x400",
+                    "name": "SNES Compat."
+                    },
                     {
                     "value": "0x0",
                     "name": "Compat."

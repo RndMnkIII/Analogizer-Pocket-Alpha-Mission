@@ -70,7 +70,7 @@ module interact
         output logic [15:0] nvram_size, // High Score Save Size
         //Analogizer
         output logic [4:0] analogizer_game_controller_type,
-        output logic [1:0] analogizer_game_cont_sample_rate,
+        output logic [2:0] analogizer_game_cont_sample_rate,
         output logic analogizer_p1_interface, //0 SNAC, 1 Pocket
         output logic analogizer_p2_interface, //0 SNAC, 1 Pocket
         // Reset Core
@@ -178,7 +178,7 @@ module interact
         analogizer_game_controller_type    = analogizer_settings_s[4:0];
         analogizer_p1_interface = analogizer_settings_s[7];
         analogizer_p2_interface = analogizer_settings_s[6];
-        analogizer_game_cont_sample_rate   = analogizer_settings_s[9:8];
+        analogizer_game_cont_sample_rate   = analogizer_settings_s[10:8];
     end
 
 endmodule
