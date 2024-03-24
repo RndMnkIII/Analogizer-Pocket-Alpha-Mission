@@ -11,35 +11,6 @@
                 "value": 1
             },
             {
-                "name": "Screen Rotation",
-                "port": "EXT",
-                "id": 203,
-                "type": "list",
-                "enabled": true,
-                "persist": true,
-                "address": "0xF4000000",
-                "defaultval": "0x00000000",
-                "mask": "0xFFFFFFFC",
-                "options": [
-                    {
-                        "name": "90 degrees",
-                        "value": "0x00000000"
-                    },
-                    {
-                        "name": "0 degrees",
-                        "value": "0x00000001"
-                    },
-                    {
-                        "name": "180 degrees",
-                        "value": "0x00000002"
-                    },
-                    {
-                        "name": "270 degrees",
-                        "value": "0x00000003"
-                    }
-                ]
-            },
-            {
                 "name": "Bonus Life",
                 "port": "BONUS",
                 "id": 3,
@@ -144,51 +115,6 @@
                 ]
             },
             {
-                "name": "Coinage",
-                "port": "DSW1",
-                "id": 7,
-                "type": "list",
-                "enabled": true,
-                "persist": true,
-                "address": "0xF1000000",
-                "defaultval": "0x00000038",
-                "mask": "0xFFFFFFC7",
-                "options": [
-                    {
-                        "name": "4 Coins/1 Credit",
-                        "value": "0x00000020"
-                    },
-                    {
-                        "name": "3 Coins/1 Credit",
-                        "value": "0x00000028"
-                    },
-                    {
-                        "name": "2 Coins/1 Credit",
-                        "value": "0x00000030"
-                    },
-                    {
-                        "name": "1 Coin/1 Credit",
-                        "value": "0x00000038"
-                    },
-                    {
-                        "name": "1 Coin/2 Credits",
-                        "value": "0x00000018"
-                    },
-                    {
-                        "name": "1 Coin/3 Credits",
-                        "value": "0x00000010"
-                    },
-                    {
-                        "name": "1 Coin/4 Credits",
-                        "value": "0x00000008"
-                    },
-                    {
-                        "name": "1 Coin/6 Credits",
-                        "value": "0x00000000"
-                    }
-                ]
-            },
-            {
                 "name": "Difficulty",
                 "port": "DSW2",
                 "id": 8,
@@ -231,27 +157,6 @@
                     {
                         "name": "Off",
                         "value": "0x00000800"
-                    },
-                    {
-                        "name": "On",
-                        "value": "0x00000000"
-                    }
-                ]
-            },
-            {
-                "name": "All Ships at Start (Cheat)",
-                "port": "DSW2",
-                "id": 10,
-                "type": "list",
-                "enabled": true,
-                "persist": true,
-                "address": "0xF1000000",
-                "defaultval": "0x00001000",
-                "mask": "0xFFFFEFFF",
-                "options": [
-                    {
-                        "name": "Off",
-                        "value": "0x00001000"
                     },
                     {
                         "name": "On",
@@ -388,6 +293,14 @@
                 "mask": "0xFFFFF8FF",
                 "options": [
                     {
+                    "value": "0x500",
+                    "name": "60Hz Compat."
+                    },
+                    {
+                    "value": "0x600",
+                    "name": "120Hz Compat."
+                    },
+                    {
                     "value": "0x400",
                     "name": "SNES Compat."
                     },
@@ -406,6 +319,50 @@
                     {
                     "value": "0x300",
                     "name": "Very Fast"
+                    }
+                ]
+            },
+            {
+                "name": "Analog Video Mode",
+                "id": 19,
+                "type": "list",
+                "enabled": true,
+                "persist": true,
+                "address": "0xF7000000",
+                "defaultval": "0x0",
+                "mask": "0xFFFF0FFF",
+                "options": [
+                    {
+                    "value": "0x0",
+                    "name": "RGBS"
+                    },
+                    {
+                    "value": "0x1000",
+                    "name": "RGsB"
+                    },
+                    {
+                    "value": "0x2000",
+                    "name": "YPbPr"
+                    }
+                ]
+            },
+            {
+                "name": "Blank Pocket Screen",
+                "id": 20,
+                "type": "list",
+                "enabled": true,
+                "persist": true,
+                "address": "0xF7000000",
+                "defaultval": "0x0",
+                "mask": "0xFFFEFFFF",
+                "options": [
+                    {
+                    "value": "0x0",
+                    "name": "Off"
+                    },
+                    {
+                    "value": "0x10000",
+                    "name": "On"
                     }
                 ]
             }

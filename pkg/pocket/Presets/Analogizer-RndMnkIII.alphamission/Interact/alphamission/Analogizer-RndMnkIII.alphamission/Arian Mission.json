@@ -74,64 +74,6 @@
                 ]
             },
             {
-                "name": "Coin A",
-                "port": "DSW1",
-                "id": 5,
-                "type": "list",
-                "enabled": true,
-                "persist": true,
-                "address": "0xF1000000",
-                "defaultval": 3,
-                "mask": "0xFFFFFFE7",
-                "options": [
-                    {
-                        "name": "4 Coins/1 Credit",
-                        "value": "0x00000000"
-                    },
-                    {
-                        "name": "3 Coins/1 Credit",
-                        "value": "0x00000008"
-                    },
-                    {
-                        "name": "2 Coins/1 Credit",
-                        "value": "0x00000010"
-                    },
-                    {
-                        "name": "1 Coin/1 Credit",
-                        "value": "0x00000018"
-                    }
-                ]
-            },
-            {
-                "name": "Coin B",
-                "port": "DSW1",
-                "id": 6,
-                "type": "list",
-                "enabled": true,
-                "persist": true,
-                "address": "0xF1000000",
-                "defaultval": 3,
-                "mask": "0xFFFFFF9F",
-                "options": [
-                    {
-                        "name": "1 Coin/2 Credits",
-                        "value": "0x00000000"
-                    },
-                    {
-                        "name": "1 Coin/3 Credits",
-                        "value": "0x00000040"
-                    },
-                    {
-                        "name": "1 Coin/4 Credits",
-                        "value": "0x00000020"
-                    },
-                    {
-                        "name": "1 Coin/6 Credits",
-                        "value": "0x00000060"
-                    }
-                ]
-            },
-            {
                 "name": "Bonus Life",
                 "port": "BONUS",
                 "id": 7,
@@ -195,27 +137,6 @@
                     {
                         "name": "Off",
                         "value": "0x00000800"
-                    },
-                    {
-                        "name": "On",
-                        "value": "0x00000000"
-                    }
-                ]
-            },
-            {
-                "name": "All Ships at Start (Cheat)",
-                "port": "DSW2",
-                "id": 10,
-                "type": "list",
-                "enabled": true,
-                "persist": true,
-                "address": "0xF1000000",
-                "defaultval": 0,
-                "mask": "0xFFFFEFFF",
-                "options": [
-                    {
-                        "name": "Off",
-                        "value": "0x00001000"
                     },
                     {
                         "name": "On",
@@ -352,6 +273,14 @@
                 "mask": "0xFFFFF8FF",
                 "options": [
                     {
+                    "value": "0x500",
+                    "name": "60Hz Compat."
+                    },
+                    {
+                    "value": "0x600",
+                    "name": "120Hz Compat."
+                    },
+                    {
                     "value": "0x400",
                     "name": "SNES Compat."
                     },
@@ -370,6 +299,50 @@
                     {
                     "value": "0x300",
                     "name": "Very Fast"
+                    }
+                ]
+            },
+            {
+                "name": "Analog Video Mode",
+                "id": 19,
+                "type": "list",
+                "enabled": true,
+                "persist": true,
+                "address": "0xF7000000",
+                "defaultval": "0x0",
+                "mask": "0xFFFF0FFF",
+                "options": [
+                    {
+                    "value": "0x0",
+                    "name": "RGBS"
+                    },
+                    {
+                    "value": "0x1000",
+                    "name": "RGsB"
+                    },
+                    {
+                    "value": "0x2000",
+                    "name": "YPbPr"
+                    }
+                ]
+            },
+            {
+                "name": "Blank Pocket Screen",
+                "id": 20,
+                "type": "list",
+                "enabled": true,
+                "persist": true,
+                "address": "0xF7000000",
+                "defaultval": "0x0",
+                "mask": "0xFFFEFFFF",
+                "options": [
+                    {
+                    "value": "0x0",
+                    "name": "Off"
+                    },
+                    {
+                    "value": "0x10000",
+                    "name": "On"
                     }
                 ]
             }

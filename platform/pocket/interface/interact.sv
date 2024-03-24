@@ -73,6 +73,8 @@ module interact
         output logic [2:0] analogizer_game_cont_sample_rate,
         output logic analogizer_p1_interface, //0 SNAC, 1 Pocket
         output logic analogizer_p2_interface, //0 SNAC, 1 Pocket
+        output logic [3:0] analog_video_type,
+	    output logic blank_pocket_screen,
         // Reset Core
         output logic        reset_sw
     );
@@ -175,10 +177,12 @@ module interact
         svc_sw     = svc_mode_s;
         status     = {status_h_s, status_l_s};
         reset_sw   = ~(reset_n && core_reset_s);
-        analogizer_game_controller_type    = analogizer_settings_s[4:0];
-        analogizer_p1_interface = analogizer_settings_s[7];
-        analogizer_p2_interface = analogizer_settings_s[6];
-        analogizer_game_cont_sample_rate   = analogizer_settings_s[10:8];
+	analogizer_game_controller_type    = analogizer_settings_s[4:0];
+	analogizer_p1_interface            = analogizer_settings_s[7];
+	analogizer_p2_interface            = analogizer_settings_s[6];
+	analogizer_game_cont_sample_rate   = analogizer_settings_s[10:8];
+	analog_video_type                  = analogizer_settings_s[15:12];
+	blank_pocket_screen                = analogizer_settings_s[16];
     end
 
 endmodule

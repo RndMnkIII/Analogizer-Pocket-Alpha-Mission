@@ -652,6 +652,9 @@ module core_top
                  .analogizer_game_cont_sample_rate(game_cont_sample_rate),
                  .analogizer_p1_interface(p1_interface),
                  .analogizer_p2_interface(p2_interface),
+                 .analog_video_type(analog_video_type),
+	             .blank_pocket_screen(blank_pocket_screen),
+
                  // Reset Switch
                  .reset_sw         ( reset_sw           )
              );
@@ -703,6 +706,7 @@ module core_top
 
     wire [23:0] s_video_rgb;
     wire        s_video_hs, s_video_vs, s_video_de;
+    wire [23:0] rgb_mix;
     
 
     scanlines scanlines_h
@@ -740,7 +744,7 @@ module core_top
                     .core_hs                  ( s_video_hs                  ),
                     .core_de                  ( s_video_de                  ),
                     // Output to Display
-                    .video_rgb                ( video_rgb                ),
+                    .video_rgb                ( rgb_mix                  ),
                     .video_vs                 ( video_vs                 ),
                     .video_hs                 ( video_hs                 ),
                     .video_de                 ( video_de                 ),
@@ -1037,16 +1041,23 @@ module core_top
     //     layer_ena_dbg[2] <= mod_sw0[2]; //FRONT
     // end
 
+    /*[ANALOGIZER_HOOK_BEGIN]*/
     //*** Analogizer Interface V1.0 ***
     wire analogizer_ena;
 	wire [4:0] game_cont_type /* synthesis keep */;
 	wire [2:0] game_cont_sample_rate /* synthesis keep */;
 	wire p1_interface /* synthesis keep */;
 	wire p2_interface /* synthesis keep */;
+    wire [3:0] analog_video_type;
+    //wire [4:0] game_cont_type /* synthesis keep */;
+    wire blank_pocket_screen;
 	wire BtnCasAplusSEL = 0;
 	wire PauseAsSelplusStart = 0;
 	wire ShowTestPattern = 0;
 
+
+    //Pocket Screen Blanking Control
+    assign video_rgb = blank_pocket_screen ? 24'h000 : rgb_mix;
     wire [15:0] p1_btn_state;
     wire [15:0] p2_btn_state;
 
@@ -1055,9 +1066,10 @@ module core_top
 		.i_rst(reset_sw ),
 		.i_ena(1'b1),
 		//Video interface
-		.R(core_r[7:2]),
-		.G(core_g[7:2]),
-		.B(core_b[7:2]),
+        .analog_video_type(analog_video_type),
+		.R(core_r[7:0]),
+		.G(core_g[7:0]),
+		.B(core_b[7:0]),
 		.BLANKn(DISP),
 		.Hsync(SYNC), //composite SYNC on HSync.
 		.Vsync(1'b1),
@@ -1087,7 +1099,7 @@ module core_top
 		//debug
     	.o_stb()
 	);
-
+/*[ANALOGIZER_HOOK_END]*/
 endmodule
 
 
