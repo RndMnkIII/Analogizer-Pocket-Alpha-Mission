@@ -3,8 +3,9 @@
 ---
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/rndmnkiii?style=social)](https://twitter.com/rndmnkiii)
+# <ADAPTED FOR ANALOGIZER> SNK ASO/Alpha Mission Compatible Gateware IP Core
 
-# SNK ASO/Alpha Mission Compatible Gateware IP Core
+Analogizer support added by RndMnkIII. See more in the Analogizer main repository: [Analogizer](https://github.com/RndMnkIII/Analogizer)
 
 Follow any core updates and news on my Twitter acount [@RndMnkIII](https://twitter.com/RndMnkIII). this project is a hobby but it requires investing in arcade game boards and specific tools, so any donation is welcome: [https://ko-fi.com/rndmnkiii](https://ko-fi.com/rndmnkiii).
 
