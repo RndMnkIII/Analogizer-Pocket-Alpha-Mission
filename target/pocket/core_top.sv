@@ -608,7 +608,58 @@ module core_top
     wire [63:0] status;
     wire [15:0] nvram_size;
     wire        reset_sw, svc_sw;
+    wire [7:0] hack_dip_sw0, hack_dip_sw1;
+    assign hack_dip_sw0 = 8'b1111_1100;
+    assign hack_dip_sw1 = 8'b1111_0111;
 
+    //ASO
+	// <switches default="9C,F7" base="16">
+	// 	<!-- DSW1 -->
+	// 	<dip bits="0"     name="Allow Continue" ids="No,3 Times" values="1,0"/>
+	// 	<dip bits="1"     name="Cabinet" ids="Upright,Cocktail" values="0,1"/>
+	// 	<dip bits="2"     name="Lives"   ids="3,5" values="1,0"/>
+	// 	<dip bits="3,5" name="Coinage" ids="4Co/1Cr,3Co/1Cr,2Co/1Cr,1Co/1Cr,1Co/2Cr,1Co/3Cr,1Co/4Cr,1Co/6Cr" values="4,5,6,7,3,2,1,0"/>
+	// 	<dip bits="6,7"   name="--"      ids="--,--,--,--" values="3,3,3,3" />
+	// 	<!-- DSW2 -->
+	// 	<dip bits="8"     name="Bonus Life"                 ids="50k 100k 100k+,50k 100k" values="1,0"/>
+	// 	<dip bits="9,10"  name="Difficulty"                 ids="Easy,Normal,Hard,Hardest" values="3,2,1,0"/>
+	// 	<dip bits="11"    name="Demo Sounds"                ids="Off,On" values="1,0"/>
+	// 	<dip bits="12"    name="All Ships at Start (Cheat)" ids="Off,On" values="1,0"/>
+	// 	<dip bits="13"    name="Flip Screen"                ids="Off,On" values="1,0"/>
+	// 	<dip bits="14,15" name="Start Area"                 ids="1,2,3,4" values="3,2,1,0"/>
+	// </switches>
+    //Arian
+    // 	<switches default="9C,F7" base="16">
+	// 	<!-- DSW1 -->
+	// 	<dip bits="0"     name="Allow Continue" ids="No,3 Times" values="1,0"/>
+	// 	<dip bits="1"     name="Cabinet" ids="Upright,Cocktail" values="0,1"/>
+	// 	<dip bits="2"     name="Lives" ids="3,5" values="0,1"/>
+	// 	<dip bits="3,4"   name="Coin A" ids="4Co/1Cr,3Co/1Cr,2Co/1Cr,1Co/1Cr" values="0,1,2,3"/>
+	// 	<dip bits="5,6"   name="Coin B" ids="1Co/2Cr,1Co/3Cr,1Co/4Cr,1Co/6Cr" values="0,2,1,3"/>
+	// 	<!-- DSW2 -->
+	// 	<dip bits="8"     name="Bonus Life" ids="50k 100k 100k+,50k 100k" values="1,0"/>
+	// 	<dip bits="9,10"  name="Difficulty" ids="Easy,Normal,Hard,Hardest" values="3,2,1,0"/>
+	// 	<dip bits="11"    name="Demo Sounds" ids="Off,On" values="1,0"/>
+	// 	<dip bits="12"    name="All Ships at Start (Cheat)" ids="Off,On" values="1,0"/>
+	// 	<dip bits="13"    name="Flip Screen" ids="Off,On" values="1,0"/>
+	// 	<dip bits="14,15" name="Start Area" ids="1,2,3,4" values="3,2,1,0"/>
+	// </switches>
+    //Alpha Mission
+    // 	<switches default="9C,F7" base="16">
+	// 	<!-- DSW1 -->
+	// 	<dip bits="0"     name="Allow Continue" ids="No,3 Times" values="1,0"/>
+	// 	<dip bits="1"     name="Cabinet" ids="Upright,Cocktail" values="0,1"/>
+	// 	<dip bits="2"     name="Lives" ids="3,5" values="0,1"/>
+	// 	<dip bits="3,4"   name="Coin A" ids="4Co/1Cr,3Co/1Cr,2Co/1Cr,1Co/1Cr" values="0,1,2,3"/>
+	// 	<dip bits="5,6"   name="Coin B" ids="1Co/2Cr,1Co/3Cr,1Co/4Cr,1Co/6Cr" values="0,2,1,3"/>
+	// 	<!-- DSW2 -->
+	// 	<dip bits="8"     name="Bonus Life" ids="50k 100k 100k+,50k 100k" values="1,0"/>
+	// 	<dip bits="9,10"  name="Difficulty" ids="Easy,Normal,Hard,Hardest" values="3,2,1,0"/>
+	// 	<dip bits="11"    name="Demo Sounds" ids="Off,On" values="1,0"/>
+	// 	<dip bits="12"    name="All Ships at Start (Cheat)" ids="Off,On" values="1,0"/>
+	// 	<dip bits="13"    name="Flip Screen" ids="Off,On" values="1,0"/>
+	// 	<dip bits="14,15" name="Start Area" ids="1,2,3,4" values="3,2,1,0"/>
+	// </switches>
     interact pocket_interact
              (
                  // Clocks and Reset
@@ -702,6 +753,7 @@ module core_top
 
     // Rotate screen from menu selection
     assign video_preset = {1'b0, ext_sw0[1:0]};
+    //assign video_preset = {3'b000}; //default 90 degrees
 
 
     wire [23:0] s_video_rgb;
@@ -1001,7 +1053,8 @@ module core_top
                       // Control
                       .VIDEO_RSTn    ( ~reset_sw          ),
                       .pause_cpu     ( pause_core         ),
-                      .DSW           ( {dip_sw1, dip_sw0} ),
+                      //.DSW           ( {dip_sw1, dip_sw0} ),
+                      .DSW           ( {hack_dip_sw1, hack_dip_sw0} ), 
                       //.DSW           ( ~{dip_sw1, dip_sw0} ),
                       .PLAYER1       ( PLAYER1            ),
                       .PLAYER2       ( PLAYER2            ),
@@ -1073,7 +1126,7 @@ module core_top
 		.BLANKn(DISP),
 		.Hsync(SYNC), //composite SYNC on HSync.
 		.Vsync(1'b1),
-		.video_clk(clk_vid),
+		.video_clk(clk_vid_90deg),
 		//SNAC interface
 		.conf_AB((game_cont_type >= 5'd16)),              //0 conf. A(default), 1 conf. B (see graph above)
 		.game_cont_type(game_cont_type), //0-15 Conf. A, 16-31 Conf. B

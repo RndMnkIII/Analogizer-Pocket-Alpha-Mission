@@ -11,186 +11,31 @@
                 "value": 1
             },
             {
-                "name": "Allow Continue",
-                "port": "DSW1",
+                "name": "Screen Rotation",
+                "port": "EXT",
                 "id": 2,
                 "type": "list",
                 "enabled": true,
                 "persist": true,
-                "address": "0xF1000000",
-                "defaultval": 1,
-                "mask": "0xFFFFFFFE",
+                "address": "0xF4000000",
+                "defaultval": "0x00000000",
+                "mask": "0xFFFFFFFC",
                 "options": [
                     {
-                        "name": "No",
+                        "name": "90 degrees",
+                        "value": "0x00000000"
+                    },
+                    {
+                        "name": "0 degrees",
                         "value": "0x00000001"
                     },
                     {
-                        "name": "3 Times",
-                        "value": "0x00000000"
-                    }
-                ]
-            },
-            {
-                "name": "Cabinet",
-                "port": "DSW1",
-                "id": 3,
-                "type": "list",
-                "enabled": true,
-                "persist": true,
-                "address": "0xF1000000",
-                "defaultval": 0,
-                "mask": "0xFFFFFFFD",
-                "options": [
-                    {
-                        "name": "Upright",
-                        "value": "0x00000000"
-                    },
-                    {
-                        "name": "Cocktail",
+                        "name": "180 degrees",
                         "value": "0x00000002"
-                    }
-                ]
-            },
-            {
-                "name": "Lives",
-                "port": "DSW1",
-                "id": 4,
-                "type": "list",
-                "enabled": true,
-                "persist": true,
-                "address": "0xF1000000",
-                "defaultval": 0,
-                "mask": "0xFFFFFFFB",
-                "options": [
-                    {
-                        "name": "3",
-                        "value": "0x00000004"
                     },
                     {
-                        "name": "5",
-                        "value": "0x00000000"
-                    }
-                ]
-            },
-            {
-                "name": "Bonus Life",
-                "port": "BONUS",
-                "id": 7,
-                "type": "list",
-                "enabled": true,
-                "persist": true,
-                "address": "0xF1000000",
-                "defaultval": 0,
-                "mask": "0xFFFFFEFF",
-                "options": [
-                    {
-                        "name": "50k 100k 100k+",
-                        "value": "0x00000100"
-                    },
-                    {
-                        "name": "50k 100k",
-                        "value": "0x00000000"
-                    }
-                ]
-            },
-            {
-                "name": "Difficulty",
-                "port": "DSW2",
-                "id": 8,
-                "type": "list",
-                "enabled": true,
-                "persist": true,
-                "address": "0xF1000000",
-                "defaultval": 0,
-                "mask": "0xFFFFF9FF",
-                "options": [
-                    {
-                        "name": "Easy",
-                        "value": "0x00000600"
-                    },
-                    {
-                        "name": "Normal",
-                        "value": "0x00000400"
-                    },
-                    {
-                        "name": "Hard",
-                        "value": "0x00000200"
-                    },
-                    {
-                        "name": "Hardest",
-                        "value": "0x00000000"
-                    }
-                ]
-            },
-            {
-                "name": "Demo Sounds",
-                "port": "DSW2",
-                "id": 9,
-                "type": "list",
-                "enabled": true,
-                "persist": true,
-                "address": "0xF1000000",
-                "defaultval": 1,
-                "mask": "0xFFFFF7FF",
-                "options": [
-                    {
-                        "name": "Off",
-                        "value": "0x00000800"
-                    },
-                    {
-                        "name": "On",
-                        "value": "0x00000000"
-                    }
-                ]
-            },
-            {
-                "name": "Flip Screen",
-                "port": "DSW2",
-                "id": 11,
-                "type": "list",
-                "enabled": true,
-                "persist": true,
-                "address": "0xF1000000",
-                "defaultval": 0,
-                "mask": "0xFFFFDFFF",
-                "options": [
-                    {
-                        "name": "Off",
-                        "value": "0x00002000"
-                    },
-                    {
-                        "name": "On",
-                        "value": "0x00000000"
-                    }
-                ]
-            },
-            {
-                "name": "Start Area",
-                "port": "DSW2",
-                "id": 12,
-                "type": "list",
-                "enabled": true,
-                "persist": true,
-                "address": "0xF1000000",
-                "defaultval": 0,
-                "mask": "0xFFFF3FFF",
-                "options": [
-                    {
-                        "name": "1",
-                        "value": "0x0000C000"
-                    },
-                    {
-                        "name": "2",
-                        "value": "0x00008000"
-                    },
-                    {
-                        "name": "3",
-                        "value": "0x00004000"
-                    },
-                    {
-                        "name": "4",
-                        "value": "0x00000000"
+                        "name": "270 degrees",
+                        "value": "0x00000003"
                     }
                 ]
             },

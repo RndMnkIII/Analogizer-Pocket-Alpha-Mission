@@ -122,7 +122,7 @@ module interact
             case(bridge_addr)
                 32'hF0000000: begin /*         RESET ONLY          */    reset_timer <= 1; end //! Reset Core Command
                 32'hF0000010: begin svc_mode    <= bridge_wr_data[0];    reset_timer <= 1; end //! Service Mode Switch
-                32'hF1000000: begin dip_switch  <= bridge_wr_data;       reset_timer <= 1; end //! DIP Switches
+                //32'hF1000000: begin dip_switch  <= bridge_wr_data;       reset_timer <= 1; end //! DIP Switches
                 32'hF2000000: begin modifiers   <= bridge_wr_data;                         end //! Modifiers
                 32'hF3000000: begin filters     <= bridge_wr_data;                         end //! A/V Filters
                 32'hF4000000: begin ext_switch  <= bridge_wr_data;       reset_timer <= 1; end //! Extra DIP Switches
@@ -137,7 +137,7 @@ module interact
             case(bridge_addr)
                 32'hF0000000: begin bridge_rd_data <= core_reset_r; end
                 32'hF0100000: begin bridge_rd_data <= svc_mode;     end
-                32'hF1000000: begin bridge_rd_data <= dip_switch;   end
+                //32'hF1000000: begin bridge_rd_data <= dip_switch;   end
                 32'hF2000000: begin bridge_rd_data <= modifiers;    end
                 32'hF3000000: begin bridge_rd_data <= filters;      end
                 32'hF4000000: begin bridge_rd_data <= ext_switch;   end
@@ -166,7 +166,8 @@ module interact
     synch_3 #(.WIDTH(32)) sync_analogizer(analogizer_settings, analogizer_settings_s, clk_sync);
 
     always_comb begin
-        {dip_sw3, dip_sw2, dip_sw1, dip_sw0} = dip_switch_s;
+        //{dip_sw3, dip_sw2, dip_sw1, dip_sw0} = dip_switch_s; //UGLY solution for removing menu options for dip switches
+        {dip_sw3, dip_sw2, dip_sw1, dip_sw0} = 32'h0;
         {ext_sw3, ext_sw2, ext_sw1, ext_sw0} = ext_switch_s;
         {mod_sw3, mod_sw2, mod_sw1, mod_sw0} =  modifiers_s;
         scnl_sw    = filters_s[3:0];
