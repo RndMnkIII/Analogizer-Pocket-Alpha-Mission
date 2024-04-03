@@ -3,7 +3,7 @@
 ---
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/rndmnkiii?style=social)](https://twitter.com/rndmnkiii)
-# <ADAPTED FOR ANALOGIZER> SNK ASO/Alpha Mission Compatible Gateware IP Core
+# __ADAPTED FOR ANALOGIZER__ SNK ASO/Alpha Mission Compatible Gateware IP Core
 
 Analogizer support added by RndMnkIII. See more in the Analogizer main repository: [Analogizer](https://github.com/RndMnkIII/Analogizer)
 
