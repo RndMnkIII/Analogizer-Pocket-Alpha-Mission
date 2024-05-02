@@ -69,12 +69,9 @@ module interact
         // High Score NVRAM
         output logic [15:0] nvram_size, // High Score Save Size
         //Analogizer
-        output logic [4:0] analogizer_game_controller_type,
-        output logic [2:0] analogizer_game_cont_sample_rate,
-        output logic analogizer_p1_interface, //0 SNAC, 1 Pocket
-        output logic analogizer_p2_interface, //0 SNAC, 1 Pocket
-        output logic [3:0] analog_video_type,
-	    output logic blank_pocket_screen,
+        output logic [4:0] snac_game_cont_type,
+        output logic [3:0] snac_cont_assignment,
+        output logic [3:0] analogizer_video_type,
         // Reset Core
         output logic        reset_sw
     );
@@ -114,7 +111,7 @@ module interact
     reg [31:0] status_h   = 0;
     reg [31:0] status_l   = 0;
     reg [15:0] nvram_sz   = 0;
-    reg [31:0] analogizer_settings = 0;
+    reg [13:0] analogizer_settings = 0;
 
     always_ff @(posedge clk_74a) begin
         reset_timer <= 0; //! Always default this to zero
@@ -127,7 +124,7 @@ module interact
                 32'hF3000000: begin filters     <= bridge_wr_data;                         end //! A/V Filters
                 32'hF4000000: begin ext_switch  <= bridge_wr_data;       reset_timer <= 1; end //! Extra DIP Switches
                 32'hF5000000: begin nvram_sz    <= bridge_wr_data[15:0];                   end //! NVRAM Size
-                32'hF7000000: begin analogizer_settings <= bridge_wr_data;                 end //! Analogizer
+                32'hF7000000: begin analogizer_settings <= bridge_wr_data[13:0];                 end //! Analogizer
                 32'hFA000000: begin status_l    <= bridge_wr_data;                         end //! Status Low  [31:0]
                 32'hFB000000: begin status_h    <= bridge_wr_data;                         end //! Status High [63:32]
             endcase
@@ -142,7 +139,7 @@ module interact
                 32'hF3000000: begin bridge_rd_data <= filters;      end
                 32'hF4000000: begin bridge_rd_data <= ext_switch;   end
                 32'hF5000000: begin bridge_rd_data <= nvram_sz;     end
-                32'hF7000000: begin bridge_rd_data <= analogizer_settings; end //Analogizer
+                32'hF7000000: begin bridge_rd_data <= {18'h0,analogizer_settings}; end //Analogizer
                 32'hFA000000: begin bridge_rd_data <= status_l;     end
                 32'hFB000000: begin bridge_rd_data <= status_h;     end
             endcase
@@ -152,7 +149,8 @@ module interact
     //! ------------------------------------------------------------------------
     //! Sync and Assign Outputs
     //! ------------------------------------------------------------------------
-    wire [31:0] dip_switch_s, ext_switch_s, modifiers_s, filters_s, status_l_s, status_h_s, nvram_sz_s, analogizer_settings_s;
+    wire [31:0] dip_switch_s, ext_switch_s, modifiers_s, filters_s, status_l_s, status_h_s, nvram_sz_s;
+    wire [13:0] analogizer_settings_s;
     wire        svc_mode_s, core_reset_s;
 
     synch_3 #(.WIDTH(32)) sync_dsw(dip_switch, dip_switch_s, clk_sync);
@@ -163,7 +161,7 @@ module interact
     synch_3 #(.WIDTH(32)) sync_sth(status_h,   status_h_s,   clk_sync);
     synch_3               sync_svc(svc_mode,   svc_mode_s,   clk_sync);
     synch_3               sync_rst(core_reset, core_reset_s, clk_sync);
-    synch_3 #(.WIDTH(32)) sync_analogizer(analogizer_settings, analogizer_settings_s, clk_sync);
+    synch_3 #(.WIDTH(14)) sync_analogizer(analogizer_settings, analogizer_settings_s, clk_sync);
 
     always_comb begin
         //{dip_sw3, dip_sw2, dip_sw1, dip_sw0} = dip_switch_s; //UGLY solution for removing menu options for dip switches
@@ -178,12 +176,9 @@ module interact
         svc_sw     = svc_mode_s;
         status     = {status_h_s, status_l_s};
         reset_sw   = ~(reset_n && core_reset_s);
-	analogizer_game_controller_type    = analogizer_settings_s[4:0];
-	analogizer_p1_interface            = analogizer_settings_s[7];
-	analogizer_p2_interface            = analogizer_settings_s[6];
-	analogizer_game_cont_sample_rate   = analogizer_settings_s[10:8];
-	analog_video_type                  = analogizer_settings_s[15:12];
-	blank_pocket_screen                = analogizer_settings_s[16];
+        snac_game_cont_type   = analogizer_settings_s[4:0];
+        snac_cont_assignment  = analogizer_settings_s[9:6];
+        analogizer_video_type = analogizer_settings_s[13:10];
     end
 
 endmodule

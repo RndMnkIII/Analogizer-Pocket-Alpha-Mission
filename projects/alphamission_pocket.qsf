@@ -10,7 +10,7 @@
 # Project-Wide Assignments
 # ==============================================================================
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 17.0.0
-set_global_assignment -name LAST_QUARTUS_VERSION "18.0.0 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "21.1.0 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name TOP_LEVEL_ENTITY apf_top
 
@@ -78,7 +78,6 @@ set_global_assignment -name SOURCE_TCL_SCRIPT_FILE ../platform/pocket/bsp/setup.
 set_global_assignment -name SYSTEMVERILOG_FILE ../platform/pocket/bsp/pocket/apf_top.sv
 set_global_assignment -name SDC_FILE ../platform/pocket/bsp/pocket/sys_constr.sdc
 set_global_assignment -name SOURCE_TCL_SCRIPT_FILE ../platform/pocket/pkgIndex.tcl
-set_global_assignment -name VERILOG_FILE ../platform/pocket/megafunctions/mf_audio_pll.v -library mf_audio_pll
 set_global_assignment -name VERILOG_FILE ../platform/pocket/megafunctions/mf_audio_pll.BAK.v
 set_global_assignment -name SYSTEMVERILOG_FILE ../platform/pocket/audio/audio_fifo.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../platform/pocket/audio/audio_mixer.sv
@@ -112,7 +111,6 @@ set_global_assignment -name SYSTEMVERILOG_FILE ../platform/pocket/interface/keyb
 set_global_assignment -name SYSTEMVERILOG_FILE ../platform/pocket/interface/keyboard/key_mgr.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../platform/pocket/interface/keyboard/usb_keyboard.sv
 set_global_assignment -name VERILOG_FILE ../platform/pocket/megafunctions/mf_datatable.v
-set_global_assignment -name VERILOG_FILE ../platform/pocket/megafunctions/mf_ddio_bidir_12.v
 set_global_assignment -name QIP_FILE ../platform/pocket/megafunctions/mf_audio_pll.qip
 set_global_assignment -name QIP_FILE ../platform/pocket/megafunctions/mf_datatable.qip
 set_global_assignment -name QIP_FILE ../platform/pocket/megafunctions/mf_ddio_bidir_12.qip
@@ -138,10 +136,6 @@ set_global_assignment -name SDC_FILE alphamission_pocket.sdc
 set_global_assignment -name CDF_FILE alphamission_pocket.cdf
 set_global_assignment -name QIP_FILE ../rtl/index.qip
 set_global_assignment -name SIGNALTAP_FILE snac_db15_log.stp
-set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
-set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
-set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
-set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name SIGNALTAP_FILE pcengine_test.stp
 set_global_assignment -name SIGNALTAP_FILE output_files/snac_db15_log.stp
 set_global_assignment -name SIGNALTAP_FILE output_files/pce_multitap.stp

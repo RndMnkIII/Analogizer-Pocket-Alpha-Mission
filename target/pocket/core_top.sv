@@ -699,12 +699,10 @@ module core_top
                  // High Score NVRAM
                  .nvram_size       ( nvram_size         ),
                  // Analogizer Settings
-                 .analogizer_game_controller_type(game_cont_type),
-                 .analogizer_game_cont_sample_rate(game_cont_sample_rate),
-                 .analogizer_p1_interface(p1_interface),
-                 .analogizer_p2_interface(p2_interface),
-                 .analog_video_type(analog_video_type),
-	             .blank_pocket_screen(blank_pocket_screen),
+                 .snac_game_cont_type(snac_game_cont_type),
+                 .snac_cont_assignment(snac_cont_assignment),
+                 .analogizer_video_type(analogizer_video_type),
+        // Reset Core
 
                  // Reset Switch
                  .reset_sw         ( reset_sw           )
@@ -992,7 +990,8 @@ module core_top
     wire pll_core_locked, pll_core_locked_s;
     wire clk_sys;       //! Core : 53.600Mhz
     wire clk_vid /* synthesis keep */;       //! Video:  6.700Mhz
-     wire clk_vid_90deg /* synthesis keep */; //! Video:  6.700Mhz @ 90deg Phase Shift
+    wire clk_vid_90deg /* synthesis keep */; //! Video:  6.700Mhz @ 90deg Phase Shift
+    wire clk_vid_180deg;
 
     core_pll core_pll
              (
@@ -1002,6 +1001,7 @@ module core_top
                  .outclk_0 ( clk_sys         ),
                  .outclk_1 ( clk_vid         ),
                  .outclk_2 ( clk_vid_90deg   ),
+                 .outclk_3 ( clk_vid_180deg  ),
 
                  .locked   ( pll_core_locked )
              );
@@ -1031,21 +1031,48 @@ module core_top
     //Player 2
     wire snac2_start, snac2_select, snac2_r3, snac2_l3, snac2_r2, snac2_l2, snac2_r1, snac2_l1, snac2_y, snac2_x, snac2_b, snac2_a, snac2_right, snac2_left, snac2_down, snac2_up;
 
-	//Switch between Pocket inputs 0 or SNAC 1 
-	assign PLAYER1 = (p1_interface)? ~{2'b00,snac1_up, snac1_down, snac1_right, snac1_left, svc_sw, 4'b0000, snac1_x,  snac1_b,  snac1_a,  snac1_start, snac1_select}: 
-	                                          ~{2'b00,   p1_up,    p1_down,    p1_right,    p1_left, svc_sw, 4'b0000, p1_btn_x, p1_btn_b, p1_btn_a, p1_start,    p1_select };
+    //switch between Analogizer SNAC and Pocket Controls for P1-P2
+    always @(posedge clk_sys) begin
+        if(snac_game_cont_type == 5'h0) begin //SNAC is disabled
+                    PLAYER1 <= ~{2'b00,   p1_up,    p1_down,    p1_right,    p1_left, svc_sw, 4'b0000, p1_btn_x, p1_btn_b, p1_btn_a, p1_start,    p1_select };
+                    PLAYER2 <= ~{2'b00,   p2_up,    p2_down,    p2_right,    p2_left, svc_sw, 4'b0000, p2_btn_x, p2_btn_b, p2_btn_a, {p2_start | p1_btn_l1}, p2_select};
+                    
+        end
+        else begin
+        case(snac_cont_assignment)
+        4'h0:    begin 
+                    PLAYER1 <= ~{2'b00,snac1_up, snac1_down, snac1_right, snac1_left, svc_sw, 4'b0000, snac1_x,  snac1_b,  snac1_a,  snac1_start, snac1_select};
+                    PLAYER2 <= ~{2'b00,   p2_up,    p2_down,    p2_right,    p2_left, svc_sw, 4'b0000, p2_btn_x, p2_btn_b, p2_btn_a, {p2_start | p1_btn_l1}, p2_select};
+                    end
+        4'h1:    begin 
+                    PLAYER1 <= ~{2'b00,   p1_up,    p1_down,    p1_right,    p1_left, svc_sw, 4'b0000, p1_btn_x, p1_btn_b, p1_btn_a, p1_start,    p1_select };
+                    PLAYER2 <= ~{2'b00,snac1_up, snac1_down, snac1_right, snac1_left, svc_sw, 4'b0000, snac1_x,  snac1_b,  snac1_a,  snac1_start, snac1_select};
 
-	assign PLAYER2 = (p2_interface)? ~{2'b00,snac2_up, snac2_down, snac2_right, snac2_left, svc_sw, 4'b0000, snac2_x,  snac2_b,  snac2_a,  {snac2_start|snac1_l1}, snac2_select}:
-	                                          ~{2'b00,   p2_up,    p2_down,    p2_right,    p2_left, svc_sw, 4'b0000, p2_btn_x, p2_btn_b, p2_btn_a, {p2_start | p1_btn_l1}, p2_select};
-    // PLAYER2                                                                                                           Armor     Missile   Shot                             Coin
+                    end
+        4'h2:    begin
+                    PLAYER1 <= ~{2'b00,snac1_up, snac1_down, snac1_right, snac1_left, svc_sw, 4'b0000, snac1_x,  snac1_b,  snac1_a,  snac1_start, snac1_select};
+                    PLAYER2 <= ~{2'b00,snac2_up, snac2_down, snac2_right, snac2_left, svc_sw, 4'b0000, snac2_x,  snac2_b,  snac2_a,  {snac2_start|snac1_l1}, snac2_select};
 
+                    end
+        4'h3:    begin
+                    PLAYER1 <= ~{2'b00,snac2_up, snac2_down, snac2_right, snac2_left, svc_sw, 4'b0000, snac2_x,  snac2_b,  snac2_a,  {snac2_start|snac1_l1}, snac2_select};
+                    PLAYER2 <= ~{2'b00,snac2_up, snac2_down, snac2_right, snac2_left, svc_sw, 4'b0000, snac2_x,  snac2_b,  snac2_a,  {snac2_start|snac1_l1}, snac2_select};
+
+                    end
+        default: begin
+                    PLAYER1 <= ~{2'b00,   p1_up,    p1_down,    p1_right,    p1_left, svc_sw, 4'b0000, p1_btn_x, p1_btn_b, p1_btn_a, p1_start,    p1_select };
+                    PLAYER2 <= ~{2'b00,   p2_up,    p2_down,    p2_right,    p2_left, svc_sw, 4'b0000, p2_btn_x, p2_btn_b, p2_btn_a, {p2_start | p1_btn_l1}, p2_select};
+                    end
+        endcase
+        end
+    end
     //To enter service mode:  
 	 //keep SERVICE pressed during boot or keep COIN pressed during boot
     //tnk3: keep 1 pressed during boot
     //athena: keep 1 pressed during boot
     //ikari: keep 1 pressed during boot1985 aso: keep 1 pressed during boot
-	 wire DISP;
-	 
+	wire DISP;
+	wire CE_PIX;
     SNK_TripleZ80 snk_TZ80_ASO
                   (
                       .i_clk         ( clk_sys            ), //53.6MHz
@@ -1053,9 +1080,7 @@ module core_top
                       // Control
                       .VIDEO_RSTn    ( ~reset_sw          ),
                       .pause_cpu     ( pause_core         ),
-                      //.DSW           ( {dip_sw1, dip_sw0} ),
-                      .DSW           ( {hack_dip_sw1, hack_dip_sw0} ), 
-                      //.DSW           ( ~{dip_sw1, dip_sw0} ),
+                      .DSW           ( {hack_dip_sw1, hack_dip_sw0} ),
                       .PLAYER1       ( PLAYER1            ),
                       .PLAYER2       ( PLAYER2            ),
                       .GAME          ( mod_sw0            ), //default ASO (ASO,Alpha Mission, Arian Mission)
@@ -1074,7 +1099,7 @@ module core_top
                       .VSYNC         ( core_vs            ),
                       .SYNC          ( SYNC               ),
 					  .DISP          ( DISP               ),
-                      .CE_PIXEL      (                    ),
+                      .CE_PIXEL      ( CE_PIX             ),
                       .snd           ( core_snd_l         )
                   );
 
@@ -1095,43 +1120,48 @@ module core_top
     // end
 
     /*[ANALOGIZER_HOOK_BEGIN]*/
-    //*** Analogizer Interface V1.0 ***
+    //*** Analogizer Interface V1.1 ***
     wire analogizer_ena;
-	wire [4:0] game_cont_type /* synthesis keep */;
-	wire [2:0] game_cont_sample_rate /* synthesis keep */;
-	wire p1_interface /* synthesis keep */;
-	wire p2_interface /* synthesis keep */;
-    wire [3:0] analog_video_type;
-    //wire [4:0] game_cont_type /* synthesis keep */;
-    wire blank_pocket_screen;
-	wire BtnCasAplusSEL = 0;
-	wire PauseAsSelplusStart = 0;
-	wire ShowTestPattern = 0;
+    reg [3:0] analogizer_video_type;
+    reg [4:0] snac_game_cont_type /* synthesis keep */;
+    reg [3:0] snac_cont_assignment /* synthesis keep */;
 
 
     //Pocket Screen Blanking Control
-    assign video_rgb = blank_pocket_screen ? 24'h000 : rgb_mix;
-    wire [15:0] p1_btn_state;
-    wire [15:0] p2_btn_state;
+    assign video_rgb = (analogizer_video_type[3]) ? 24'h000000: rgb_mix;
+
+
+    //Video synchronizer for Analogizer DAC
+    reg ce_pix_r;
+    reg csync_r;
+    reg blank_r;
+    reg [23:0] rgb_color_r;
+    always @(posedge clk_sys) begin
+        ce_pix_r <= CE_PIX;
+        
+        if (!ce_pix_r && CE_PIX) begin //rising edge
+            csync_r <= SYNC;
+            blank_r <= DISP;
+            rgb_color_r <= {core_b,core_g,core_r};
+        end
+    end
 
     openFPGA_Pocket_Analogizer #(.MASTER_CLK_FREQ(53_600_000)) analogizer (
 		.i_clk(clk_sys),
 		.i_rst(reset_sw ),
 		.i_ena(1'b1),
 		//Video interface
-        .analog_video_type(analog_video_type),
-		.R(core_r[7:0]),
-		.G(core_g[7:0]),
-		.B(core_b[7:0]),
-		.BLANKn(DISP),
-		.Hsync(SYNC), //composite SYNC on HSync.
+       .analog_video_type(analogizer_video_type),
+      .R(rgb_color_r [7:0]),
+		.G(rgb_color_r [15:8]),
+		.B(rgb_color_r [23:16]),
+      .BLANKn(blank_r),
+      .Hsync(csync_r), //composite SYNC on HSync.
 		.Vsync(1'b1),
-		.video_clk(clk_vid_90deg),
+      .video_clk(clk_sys),
 		//SNAC interface
-		.conf_AB((game_cont_type >= 5'd16)),              //0 conf. A(default), 1 conf. B (see graph above)
-		.game_cont_type(game_cont_type), //0-15 Conf. A, 16-31 Conf. B
-		.game_cont_sample_rate(game_cont_sample_rate), //0 compatibility mode (slowest), 1 normal mode, 2 fast mode, 3 superfast mode
-        //.game_cont_sample_rate(2'b01), //0 compatibility mode (slowest), 1 normal mode, 2 fast mode, 3 superfast mode
+		.conf_AB((snac_game_cont_type >= 5'd16)),              //0 conf. A(default), 1 conf. B (see graph above)
+		.game_cont_type(snac_game_cont_type), //0-15 Conf. A, 16-31 Conf. B
 		.p1_btn_state({snac1_start, snac1_select, snac1_r3, snac1_l3, snac1_r2, snac1_l2, snac1_r1, snac1_l1, snac1_y, snac1_x, snac1_b, snac1_a, snac1_right, snac1_left, snac1_down, snac1_up}),
 		.p2_btn_state({snac2_start, snac2_select, snac2_r3, snac2_l3, snac2_r2, snac2_l2, snac2_r1, snac2_l1, snac2_y, snac2_x, snac2_b, snac2_a, snac2_right, snac2_left, snac2_down, snac2_up}),
 		.busy(),   

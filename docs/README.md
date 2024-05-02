@@ -5,10 +5,12 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/rndmnkiii?style=social)](https://twitter.com/rndmnkiii)
 # ADAPTED FOR ANALOGIZER: SNK ASO/Alpha Mission Compatible Gateware IP Core
 
-Analogizer support added by RndMnkIII. See more in the Analogizer main repository: [Analogizer](https://github.com/RndMnkIII/Analogizer)
+* Analogizer V1.1 [02/05/2024]: Analogizer Interface 1.1, Fixed Analogizer video signals (better image stability in YPbPr video mode)
 
-Follow any core updates and news on my Twitter acount [@RndMnkIII](https://twitter.com/RndMnkIII). this project is a hobby but it requires investing in arcade game boards and specific tools, so any donation is welcome: [https://ko-fi.com/rndmnkiii](https://ko-fi.com/rndmnkiii).
+Adapted to Analogizer by [@RndMnkIII](https://github.com/RndMnkIII).
 
+See Analogizer repository:
+https://github.com/RndMnkIII/Analogizer
 ## ℹ️ About
 
 This core originated from the core project for __SNK's__ __Alpha__ __Mission__ arcade game. Encompass the __"SNK Triple Z80"__ platform, this groups together several games that were developed by SNK around the mid-1980s using a similar hardware architecture. For a complete reference of the list of games consult
